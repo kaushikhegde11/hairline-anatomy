@@ -1,0 +1,7 @@
+.DS_Store
+node_modules/
+shots/
+# pages written by the example build scripts
+examples/**/*.html
+examples/**/*-still.svg
+examples/landing-figures/stills/

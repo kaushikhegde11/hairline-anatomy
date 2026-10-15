@@ -1,0 +1,45 @@
+/* hairline-anatomy figures on a host page: grey shaded faces, every line in
+   the host's accent colour, light and dark. Put class="hla-fig iso" on the
+   figure's canvas; the host runtime sets [data-dark] from the page's theme.
+   The host provides --paper, --accent and --ink (or overrides --hla-paper,
+   --hla-line and --hla-ink directly). Load after the kit's ISO_CSS. */
+.hla-fig.iso{
+  --hla-paper:var(--paper,#FAFAF8);--hla-line:var(--accent,#2B4CFF);--hla-ink:var(--ink,#15171C);
+  --anatomy-page:var(--hla-paper);--anatomy-card:var(--hla-paper);--anatomy-text:var(--hla-ink);
+  --anatomy-paper:var(--hla-paper);--anatomy-face:var(--hla-paper);
+  --anatomy-top:color-mix(in srgb,var(--hla-paper) 96%,#fff);
+  --anatomy-shade-0:color-mix(in srgb,var(--hla-paper) 80%,var(--hla-ink));
+  --anatomy-shade-1:color-mix(in srgb,var(--hla-paper) 86%,var(--hla-ink));
+  --anatomy-shade-2:color-mix(in srgb,var(--hla-paper) 91%,var(--hla-ink));
+  --anatomy-shade-3:color-mix(in srgb,var(--hla-paper) 96%,var(--hla-ink));
+  --anatomy-lit-top:color-mix(in srgb,var(--hla-line) 12%,var(--hla-paper));
+  --anatomy-lit-shade:color-mix(in srgb,var(--hla-line) 20%,var(--hla-paper));
+  --anatomy-hi:var(--hla-line);
+  --anatomy-mid:color-mix(in srgb,var(--hla-line) 80%,var(--hla-paper));
+  --anatomy-lo:color-mix(in srgb,var(--hla-line) 52%,var(--hla-paper));
+  --anatomy-faint:color-mix(in srgb,var(--hla-line) 30%,var(--hla-paper));
+  --anatomy-lit:var(--hla-line);
+  --anatomy-dot:color-mix(in srgb,var(--hla-line) 75%,var(--hla-paper));
+  --anatomy-halo:var(--hla-ink);--anatomy-halo-opacity:.16;
+  --anatomy-weight:.7px;
+  position:relative;
+}
+/* dark pages: shading goes toward black, tops toward white */
+.hla-fig.iso[data-dark]{
+  --anatomy-top:color-mix(in srgb,var(--hla-paper) 90%,#fff);
+  --anatomy-shade-0:color-mix(in srgb,var(--hla-paper) 62%,#000);
+  --anatomy-shade-1:color-mix(in srgb,var(--hla-paper) 72%,#000);
+  --anatomy-shade-2:color-mix(in srgb,var(--hla-paper) 82%,#000);
+  --anatomy-shade-3:color-mix(in srgb,var(--hla-paper) 92%,#000);
+  --anatomy-halo:#000;--anatomy-halo-opacity:.55;
+}
+.hla-fig .hla-svg{position:absolute;inset:0;inline-size:100%;block-size:100%;overflow:visible}
+.hla-fig .hla-still{position:absolute;inset:0;inline-size:100%;block-size:100%}
+/* the WebGL layer: emitted light adds in dark, ink is solved for paper in light */
+.hla-fig .hla-gl{position:absolute;inset:0;inline-size:100%;block-size:100%;pointer-events:none;display:block}
+.hla-fig[data-dark] .hla-gl{mix-blend-mode:screen}
+/* SVG fallbacks for the lights; the shader takes over when it runs */
+.hla-fig .hla-led .iso-fill,.hla-fig .hla-led .iso-top,.hla-fig .hla-led .iso-shade{fill:color-mix(in srgb,var(--hla-line) 70%,var(--hla-paper))}
+.hla-fig[data-gl] .hla-led .iso-fill,.hla-fig[data-gl] .hla-led .iso-top,.hla-fig[data-gl] .hla-led .iso-shade{fill:color-mix(in srgb,var(--hla-line) 40%,var(--hla-paper))}
+.hla-fig .hla-screen{fill:color-mix(in srgb,var(--hla-line) 24%,var(--hla-paper));stroke:none}
+.hla-fig[data-gl] .hla-screen{fill:var(--hla-paper)}
